@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="21G531" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Fotos" representedClassName="Fotos" syncable="YES" codeGenerationType="class">
+        <attribute name="foto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="idTarea" optional="YES" attributeType="String"/>
+        <relationship name="origen" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tareas" inverseName="relationToFotos" inverseEntity="Tareas"/>
+    </entity>
+    <entity name="Metas" representedClassName="Metas" syncable="YES" codeGenerationType="class">
+        <attribute name="desc" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="titulo" optional="YES" attributeType="String"/>
+        <relationship name="relationToTareas" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tareas" inverseName="origen" inverseEntity="Tareas"/>
+    </entity>
+    <entity name="Tareas" representedClassName="Tareas" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="idMeta" optional="YES" attributeType="String"/>
+        <attribute name="tarea" optional="YES" attributeType="String"/>
+        <relationship name="origen" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Metas" inverseName="relationToTareas" inverseEntity="Metas"/>
+        <relationship name="relationToFotos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Fotos" inverseName="origen" inverseEntity="Fotos"/>
+    </entity>
+</model>
