@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
-//Vid 211,formulario para guardar las tareas
-//Se copia al de metas que hicimos previamente 
+
 struct AddTareasView: View {
+    //Paso 3.1,formulario para guardar las tareas
+    //Se copia al de metas que hicimos previamente
     @Environment(\.managedObjectContext) var context
     @ObservedObject var model = TareasViewModel()
     var meta : Metas
+    
     var body: some View {
         VStack{
             TextField("tarea", text: $model.tarea)
@@ -32,14 +34,16 @@ struct TareasView_Previews: PreviewProvider {
         
         // Crear una meta de ejemplo
         let exampleMeta = Metas(context: previewContext)
-        exampleMeta.id = UUID().uuidString  // Aquí lo convertimos a String
+        // Aquí lo convertimos a String
+        exampleMeta.id = UUID().uuidString
         exampleMeta.titulo = "Ejemplo de Meta"
         
         // Crear una tarea de ejemplo
         let exampleTarea = Tareas(context: previewContext)
         exampleTarea.id = UUID().uuidString
         exampleTarea.tarea = "Ejemplo de Tarea"
-        exampleTarea.idMeta = exampleMeta.id  // Ahora es un String
+        // Ahora es un String
+        exampleTarea.idMeta = exampleMeta.id
         
         do {
             try previewContext.save()

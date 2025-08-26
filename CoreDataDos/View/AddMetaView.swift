@@ -9,11 +9,12 @@
 import SwiftUI
 
 struct AddMetaView: View {
-    //Vid210,usamos el contexto
+    //V-210,paso 2.0 usamos el contexto
     @Environment(\.managedObjectContext) var context
-    //Vid 210,usamos el ObservedObject
+    // Usamos el ObservedObject o el State
     @ObservedObject var model = MetasViewModel()
-    //Vid 210,usamos nuestro formulario 
+    
+    // Usamos nuestro formulario
     var body: some View {
         VStack{
             TextField("Titulo", text: $model.titulo)

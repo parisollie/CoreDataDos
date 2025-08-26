@@ -4,7 +4,8 @@
 //
 //  Created by Paul Jaime Felix Flores on 11/05/23.
 //
-//Vid 216,se puede guardar para los snniperts
+
+//V-216,paso 8.0 ,BUSCADOR se puede guardar para los snippets
 import Foundation
 import SwiftUI
 
@@ -21,7 +22,7 @@ struct SearchBar: UIViewRepresentable {
         searchBar.delegate = context.coordinator
         return searchBar
     }
-    //Vid 216, es una actualizacion de la vista
+    // Es una actualizacion de la vista
     func updateUIView(_ uiView: UISearchBar, context: Context) {
         uiView.text = text
     }
@@ -29,11 +30,11 @@ struct SearchBar: UIViewRepresentable {
     class Coordinator: NSObject, UISearchBarDelegate {
         
         @Binding var text : String
-        //Hacemos un constructor
+        // Hacemos un constructor
         init(text: Binding<String>){
             _text = text
         }
-        //Metodo textDid chaange
+        // Método textDid change
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
             text = searchText
         }

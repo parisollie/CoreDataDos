@@ -6,52 +6,59 @@
 //
 
 import SwiftUI
-//Vid 209, hacemos nuestro import de core data
 import CoreData
-//Vid 209
+
+
 struct Home: View {
-    //Vid209,usamos el contexto
+    // Paso 1.3 usamos el contexto
     @Environment(\.managedObjectContext) var context
-    //Vid 209 hacemos el FetchRequest y nuestra entidad
-    //En FetchedResults ponemos nuestra Meta
+    
+    /*
+      Hacemos el FetchRequest y nuestra entidad
+      En FetchedResults ponemos nuestra Meta
+    */
     @FetchRequest(entity: Metas.entity(), sortDescriptors: []) var metas: FetchedResults<Metas>
-    //Vid 213 ,mandamos a llamar el model ,para tarer eliminar 
+    
+    // Paso 5.1 ,mandamos a llamar el model ,para traer eliminar.
     @ObservedObject var model = MetasViewModel()
-    //Vid 218, es la variable que nos estara buscando en el buscador
+    
+    // Paso 8.1, es la variable que nos estará buscando en el buscador
     @State private var buscar = ""
+    
     var body: some View {
-        //Vid 209
+        // Paso 1.5
         NavigationView{
-            //Vid 210,ponemos nuestro VStack
+            // Paso 2.1,ponemos nuestro VStack
             VStack{
-                //Vid 216,ponemos el binding 
+                // Paso 8.2,ponemos el binding
                 SearchBar(text: $buscar)
                 List{
-                    //Vid209, hacemos nuestro Foreach
+                    // Paso 1.6, hacemos nuestro Foreach
                     ForEach(metas.filter {
-                        //Vid 216, ponemos las variables que queremos filtrar para nuestro buscador
+                        // Paso 8.3, ponemos las variables que queremos filtrar para nuestro buscador, yo quiero filtrar la de titulo y la hacemos minuscula
                         buscar.isEmpty ? true : $0.titulo!.lowercased().contains(buscar.lowercased())
                     }){ meta in
-                        //Vid 210 ,vamos a tareasVoew 
+                        // Paso 2.4,vamos a tareasView
                         NavigationLink(destination: TareasView(meta:meta)){
-                            //Vid 209
+                            //Paso 1.7
                             VStack(alignment: .leading){
                                 Text(meta.titulo ?? "").font(.title)
                                 Text(meta.desc ?? "").font(.headline)
-                            }
-                        }
-                        //Vid 213,mandams para eliminar
-                    }.onDelete{ (IndexSet) in
+                            }//:V-STACK
+                        }//:NavigationLink
+                    }
+                    //Paso 5.2,mandamos para eliminar
+                    .onDelete{ (IndexSet) in
                         let borrarMeta = metas[IndexSet.first!]
                         model.deleteData(item: borrarMeta, context: context)
                     }
-                }
-                //Vid 210,ponemos nuestro navigationlik y nuestr destino es Add View
+                }//:List
+                //Paso 2.2,ponemos nuestro navigationlik y nuestro destino es Add View
                 NavigationLink(destination: AddMetaView()){
                     Image(systemName: "note")
-                }
-            }.navigationBarTitle("Metas")
-        }
+                }//:NavigationLink
+            }.navigationBarTitle("Metas")//:V-STACK
+        }//:NavigationView
     }
 }
 

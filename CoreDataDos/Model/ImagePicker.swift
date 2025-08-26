@@ -4,10 +4,11 @@
 //
 //  Created by Paul Jaime Felix Flores on 11/05/23.
 //
-//Vid 214, sirve para aprender , pasar a otro mejor 
+
 import Foundation
 import SwiftUI
 
+//Paso 6.3, lo copiamos nada mas
 struct ImagePicker: UIViewControllerRepresentable {
     
     @Binding var show : Bool
