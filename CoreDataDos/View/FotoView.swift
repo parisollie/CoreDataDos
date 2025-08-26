@@ -24,6 +24,9 @@ struct FotoView: View {
     @State private var imagePicker = false
     @State private var source : UIImagePickerController.SourceType = .camera
     
+    // ⚠️ para mostrar alerta si no se selecciona foto
+    @State private var mostrarAlerta = false
+    
     //V-215,paso 7.0 para una grid al salvar las fotos
     let gridItem : [GridItem] = Array(repeating: .init(.flexible(maximum: 100)), count: 3)
     
@@ -34,7 +37,7 @@ struct FotoView: View {
         newFoto.foto = imagen
         //  Necesitamos el id de la foto
         newFoto.idTarea = tarea.id
-        // Ponemos la relacion 
+        // Ponemos la relacion
         tarea.mutableSetValue(forKey: "relationToFotos").add(newFoto)
         
         do {
@@ -60,10 +63,19 @@ struct FotoView: View {
                     //Le pasamos el párametro
                     LazyVGrid(columns: gridItem, spacing: 10){
                         ForEach(fotos.wrappedValue){ foto in
-                            Image(uiImage: UIImage(data: foto.foto ?? Data())!)
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .aspectRatio(contentMode: .fit)
+                            // ⚠️ Validamos que la foto tenga data válida antes de crear UIImage
+                            if let data = foto.foto, let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .aspectRatio(contentMode: .fit)
+                            } else {
+                                // Si no hay imagen mostramos un placeholder
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
                 }//:SCROLL
@@ -87,9 +99,24 @@ struct FotoView: View {
                         ])
                     }
                     Button(action:{
-                        save(imagen: imageData)
+                        // ⚠️ Si no hay imagen seleccionada mostramos alerta
+                        if imageData.isEmpty {
+                            mostrarAlerta = true
+                        } else {
+                            save(imagen: imageData)
+                            // limpiamos el imageData después de guardar
+                            imageData = Data()
+                        }
                     }){
                         Text("Guardar imagen")
+                    }
+                    // ⚠️ Alert si no se selecciona foto
+                    .alert(isPresented: $mostrarAlerta) {
+                        Alert(
+                            title: Text("Advertencia"),
+                            message: Text("Debes seleccionar una foto antes de guardar."),
+                            dismissButton: .default(Text("OK"))
+                        )
                     }
                 }//:H-STACK
             }//:V-STACK
@@ -113,6 +140,4 @@ struct FotoView: View {
     return FotoView(tarea: ejemploTarea)
         .environment(\.managedObjectContext, context)
 }
-
-
 
